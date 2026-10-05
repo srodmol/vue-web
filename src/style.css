@@ -9,15 +9,8 @@ body{
 
 @font-face {
   font-family: batman;
-  src: url(../fonts/batmfo__.ttf);
+  src: url(/fonts/batmfo__.ttf);
 }
-
-
-
-
-
-
-
 
 @custom-variant dark (&:is(.dark *));
 
