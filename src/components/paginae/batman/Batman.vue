@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { House } from '@lucide/vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { House, Menu } from '@lucide/vue';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,61 +11,89 @@ import {
 import CarrusImaginum from '@/components/ui/CarrusImaginum.vue';
 
 import scrollToSection from '@/utils/scrollToSection';
-
-
-
-
+import { Toggle } from '@/components/ui/toggle'
 
 const photos = ["justice", "arkham", "superman", "varios", "villana", "villano", "grupo", "robin", "anne", "joker", "resplandor", "cat", "gafas", "league", "fondoVerde"]
 
+const videreMenu = ref<boolean>(true)
 
+const handleResize = () => {
+  videreMenu.value = window.innerWidth >= 640
+}
+
+onMounted(() => {
+  handleResize()
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <template> 
 <div class="batman">
 
-<nav class="extra-nav flex flex-col sm:flex-row sm:items-center justify-between px-3">
-    <RouterLink to="/">
-    <House class="icon-home"/>
+  <Toggle
+    v-model="videreMenu"
+    class="fixed top-2 right-2 z-20 bg-white/70 sm:hidden"
+    aria-label="Mostrar u ocultar el menú"
+  >
+    <Menu />
+  </Toggle>
+
+  <nav
+    class="extra-nav flex-col sm:flex-row sm:items-center justify-between px-3"
+    :class="videreMenu ? 'flex' : 'hidden sm:flex'"
+  >
+    <RouterLink to="/" aria-label="Inicio">
+      <House class="icon-home"/>
     </RouterLink>
- 
+
     <NavigationMenu>
     <NavigationMenuList class="flex flex-col sm:flex-row">
       <NavigationMenuItem>
-        <a href="#" @click.prevent="scrollToSection('#')">
-           <NavigationMenuLink :class="[navigationMenuTriggerStyle(), 'text-md hover:bg-brand-purple hover:text-white transition-colors']">
-            Portada
-           </NavigationMenuLink>
-        </a>
+        <NavigationMenuLink
+          href="#"
+          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
+          @click.prevent="scrollToSection('#')"
+        >
+          Portada
+        </NavigationMenuLink>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
-        <a href="#vehiculis" @click.prevent="scrollToSection('#vehiculis')">
-           <NavigationMenuLink :class="[navigationMenuTriggerStyle(), 'text-md hover:bg-brand-purple hover:text-white transition-colors']">
-            Vehículos
-           </NavigationMenuLink>
-        </a>
+        <NavigationMenuLink
+          href="#vehiculis"
+          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
+          @click.prevent="scrollToSection('#vehiculis')"
+        >
+          Vehículos
+        </NavigationMenuLink>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
-        <a href="#videre" @click.prevent="scrollToSection('#videre')">
-           <NavigationMenuLink :class="[navigationMenuTriggerStyle(), 'text-md hover:bg-brand-purple hover:text-white transition-colors']">
-            Imágenes
-           </NavigationMenuLink>
-        </a>
+        <NavigationMenuLink
+          href="#videre"
+          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
+          @click.prevent="scrollToSection('#videre')"
+        >
+          Imágenes
+        </NavigationMenuLink>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
-        <a href="#contactus" @click.prevent="scrollToSection('#contactus')">
-           <NavigationMenuLink :class="[navigationMenuTriggerStyle(), 'text-md hover:bg-brand-purple hover:text-white transition-colors']">
-            Contacto
-           </NavigationMenuLink>
-        </a>
+        <NavigationMenuLink
+          href="#contactus"
+          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
+          @click.prevent="scrollToSection('#contactus')"
+        >
+          Contacto
+        </NavigationMenuLink>
       </NavigationMenuItem>
-
     </NavigationMenuList>
-  </NavigationMenu>
-</nav>
+    </NavigationMenu>
+  </nav>
 
 <header class="titulus">
     <h1>Batman</h1>
@@ -80,7 +109,7 @@ const photos = ["justice", "arkham", "superman", "varios", "villana", "villano",
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula vulputate elit eget fermentum. Ut laoreet ante lacus. Quisque ut tincidunt metus. Curabitur congue, arcu nec tempus sodales, neque sem ultrices mauris, eu tincidunt nibh nibh eu massa. Aenean rhoncus quis nibh ac facilisis.</p>
             <small>Fabricado en 2005</small>
             </div>
-            <img src="/imágenes/batman/avion.jpg"/>
+            <img src="/imágenes/batman/avion.jpg" alt="Avión de Batman"/>
         </div>
 
         <div class="item duo">
@@ -89,7 +118,7 @@ const photos = ["justice", "arkham", "superman", "varios", "villana", "villano",
             <p>Nulla aliquip cupidatat voluptate veniam nostrud aliquip sit enim officia. Sit eu pariatur officia qui dolor adipisicing cupidatat. Sit consectetur et eu ut esse laboris nulla.</p>
             <small>Fabricado en 2006</small>
             </div>
-            <img src="/imágenes/batman/moto.jpg"/>
+            <img src="/imágenes/batman/moto.jpg" alt="Moto de Batman"/>
         </div>
         
         <div class="item tribus">
@@ -98,12 +127,12 @@ const photos = ["justice", "arkham", "superman", "varios", "villana", "villano",
             <p>Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non</p>
             <small>Fabricado en 2007</small>
             </div>
-            <img src="/imágenes/batman/car.jpg"/>
+            <img src="/imágenes/batman/car.jpg" alt="Coche de Batman"/>
         </div>
         </div>
 
         <div class="vehiculis-titulus">
-        <h1>Vehículos de Batman</h1>
+        <h2>Vehículos de Batman</h2>
         </div>
     </section>
 
@@ -135,10 +164,18 @@ const photos = ["justice", "arkham", "superman", "varios", "villana", "villano",
     background-color:slateblue;
 }
 
+.toggle-menu {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  background-color: white;
+}
+
 .extra-nav {
   background-color: white;
   opacity: 0.7;
-  box-shadow: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
   width: 11rem;
@@ -230,6 +267,7 @@ const photos = ["justice", "arkham", "superman", "varios", "villana", "villano",
 
 .item > img {
   width: 450px;
+  max-width: 100%;
 }
 
 
