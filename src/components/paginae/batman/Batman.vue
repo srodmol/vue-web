@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { markRaw, ref } from 'vue';
 import NavigatorPrimarius from '@/components/NavigatorPrimarius.vue';
 
 import CarrusImaginum from '@/components/ui/CarrusImaginum.vue';
@@ -18,11 +18,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import type { DateValue } from 'reka-ui';
-import { Loader2 } from '@lucide/vue';
+import { Loader2, LucideBadgeCheck, Mail, MapPin, MessageCircle, Phone, X } from '@lucide/vue';
+import {Icon} from '@iconify/vue';
+import {toast} from 'vue-sonner';
+
 
 const dies = ref<DateValue>()
 const nomen = ref<string>("")
@@ -59,8 +62,24 @@ const menuItems = [
 
 const mittereSubmit = async () => {
   estLoading.value = true
+
   await new Promise((resolve) => setTimeout(resolve, 2000)) // Envío de datos
   estLoading.value = false
+
+  toast(`Solicitud enviada correctamente
+  - Nombre: ${nomen.value} ${cognomen.value}
+  - Missión: ${missio.value}
+  - Fecha: ${dies.value ? `${dies.value.day}/${dies.value.month}/${dies.value.year}` : 'No especificada'}`, {
+        duration: 4000,
+        position: 'top-right',
+        icon: markRaw(LucideBadgeCheck),
+        style: {
+          background: '#201c3b',
+          color: '#ffffff',
+          whiteSpace: 'pre-wrap'
+        }
+      }
+  )
 
   console.log ('Formulario enviado:', {
   dies: dies.value,
@@ -253,17 +272,17 @@ const mittereSubmit = async () => {
                 
             <div class="space-y-2">
               <p class="flex items-center gap-2 justify-center md:justify-start">
-
+                <Phone class="w-5 h-5" />
                 +1 (555) 123-4567
 
               </p>
               <p class="flex items-center gap-2 justify-center md:justify-start">
-
+                <Mail class="w-5 h-5" />
                 batman@wayneenterprises.com
 
               </p>
               <p class="flex items-center gap-2 justify-center md:justify-start">
-
+                <MapPin class="w-5 h-5" />
                 Wayne Manor, Gotham City
 
               </p>
@@ -275,10 +294,10 @@ const mittereSubmit = async () => {
             <h3 class="text-xl font-bold text-white">Síguenos</h3>
             <div class="flex gap-8 justify-center">
             
-              Icono de X -
-              Icono de Instagram -
-              Icono de Linkedin - 
-              Icono de MessageCircle
+              <X class="w-10 h-10 hover:text-white" />
+              <Icon icon="mdi:instagram" class="w-10 h-10 hover:text-white"/>
+              <Icon icon="mdi:linkedin" class="w-10 h-10 hover:text-white"/>
+              <MessageCircle class="w-10 h-10 hover:text-white" />
                   
             </div>
         </div>
