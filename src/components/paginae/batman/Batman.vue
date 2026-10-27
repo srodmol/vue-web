@@ -1,169 +1,106 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import { House, Menu } from '@lucide/vue';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
-import CarrusImaginum from '@/components/ui/CarrusImaginum.vue';
+import NavigatorPrimarius from '@/components/NavigatorPrimarius.vue';
 
+import CarrusImaginum from '@/components/ui/CarrusImaginum.vue';
 import scrollToSection from '@/utils/scrollToSection';
-import { Toggle } from '@/components/ui/toggle'
 import { useMouseMotion } from '@/composables/useMouseMotion';
+
 
 const photos = ["justice", "arkham", "superman", "varios", "villana", "villano", "grupo", "robin", "anne", "joker", "resplandor", "cat", "gafas", "league", "fondoVerde"]
 
 const { mousePosition, cumMouseLeave, cumMouseMove } = useMouseMotion()
 
-const videreMenu = ref<boolean>(true)
-
-
-
-const handleResize = () => {
-  videreMenu.value = window.innerWidth >= 640
-}
-
-onMounted(() => {
-  handleResize()
-  window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
-
-
+const menuItems = [
+  {
+    label: 'Portada',
+    href: '#',
+    onClick: () => scrollToSection('#')
+  },
+  {
+    label: 'Vehículos',
+    href: '#vehiculis',
+    onClick: () => scrollToSection('#vehiculis')
+  },
+   {
+    label: 'Imágenes',
+    href: '#videre',
+    onClick: () => scrollToSection('#videre')
+  },
+   {
+    label: 'Contacto',
+    href: '#contactus',
+    onClick: () => scrollToSection('#contactus')
+  },
+]
 </script>
 
 <template> 
-<div class="batman">
+  <div class="batman">
+    
+    <NavigatorPrimarius :items="menuItems" homeRoute="/" />
 
-  <Toggle
-    v-model="videreMenu"
-    class="fixed top-2 right-2 z-20 bg-white/70 sm:hidden"
-    aria-label="Mostrar u ocultar el menú"
-  >
-    <Menu />
-  </Toggle>
+    <header class="titulus">
+        <h1>Batman</h1>
 
-  <nav
-    class="extra-nav flex-col sm:flex-row sm:items-center justify-between px-3"
-    :class="videreMenu ? 'flex' : 'hidden sm:flex'"
-  >
-    <RouterLink to="/" aria-label="Inicio">
-      <House class="icon-home"/>
-    </RouterLink>
+        <div
+          id="titulus-batman"
+          class="titulus-img"
+          @mousemove="cumMouseMove"
+          @mouseleave="cumMouseLeave"
+          :style="{
+            backgroundPositionX: `calc(50% + ${mousePosition.x}px)`,
+            backgroundPositionY: `calc(50% + ${mousePosition.y}px)`,
+            transition: 'background-position 0.1s ease-out'
+          }"
+        ></div>
+        <p>Él puede tomar la decisión que nadie más puede, la decisión correcta</p>
+    </header>
 
-    <NavigationMenu>
-    <NavigationMenuList class="flex flex-col sm:flex-row">
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="#"
-          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
-          @click.prevent="scrollToSection('#')"
-        >
-          Portada
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+      <section id="vehiculis">
+      <div class="vehiculis-arca">
+          <div class="item unus">
+              <div class="notitia">
+              <h2>Avión</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula vulputate elit eget fermentum. Ut laoreet ante lacus. Quisque ut tincidunt metus. Curabitur congue, arcu nec tempus sodales, neque sem ultrices mauris, eu tincidunt nibh nibh eu massa. Aenean rhoncus quis nibh ac facilisis.</p>
+              <small>Fabricado en 2005</small>
+              </div>
+              <img src="/imágenes/batman/avion.jpg" alt="Avión de Batman"/>
+          </div>
 
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="#vehiculis"
-          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
-          @click.prevent="scrollToSection('#vehiculis')"
-        >
-          Vehículos
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+          <div class="item duo">
+              <div class="notitia">
+              <h2>Moto</h2>
+              <p>Nulla aliquip cupidatat voluptate veniam nostrud aliquip sit enim officia. Sit eu pariatur officia qui dolor adipisicing cupidatat. Sit consectetur et eu ut esse laboris nulla.</p>
+              <small>Fabricado en 2006</small>
+              </div>
+              <img src="/imágenes/batman/moto.jpg" alt="Moto de Batman"/>
+          </div>
+          
+          <div class="item tribus">
+              <div class="notitia">
+              <h2>Coche</h2>
+              <p>Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non</p>
+              <small>Fabricado en 2007</small>
+              </div>
+              <img src="/imágenes/batman/car.jpg" alt="Coche de Batman"/>
+          </div>
+          </div>
 
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="#videre"
-          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
-          @click.prevent="scrollToSection('#videre')"
-        >
-          Imágenes
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+          <div class="vehiculis-titulus">
+          <h2>Vehículos de Batman</h2>
+          </div>
+      </section>
 
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="#contactus"
-          :class="[navigationMenuTriggerStyle(), 'text-base hover:bg-brand-purple hover:text-white transition-colors']"
-          @click.prevent="scrollToSection('#contactus')"
-        >
-          Contacto
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-    </NavigationMenuList>
-    </NavigationMenu>
-  </nav>
-
-<header class="titulus">
-    <h1>Batman</h1>
-
-    <div
-      id="titulus-batman"
-      class="titulus-img"
-      @mousemove="cumMouseMove"
-      @mouseleave="cumMouseLeave"
-      :style="{
-        backgroundPositionX: `calc(50% + ${mousePosition.x}px)`,
-        backgroundPositionY: `calc(50% + ${mousePosition.y}px)`,
-        transition: 'background-position 0.1s ease-out'
-      }"
-    ></div>
-    <p>Él puede tomar la decisión que nadie más puede, la decisión correcta</p>
-</header>
-
-    <section id="vehiculis">
-    <div class="vehiculis-arca">
-        <div class="item unus">
-            <div class="notitia">
-            <h2>Avión</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula vulputate elit eget fermentum. Ut laoreet ante lacus. Quisque ut tincidunt metus. Curabitur congue, arcu nec tempus sodales, neque sem ultrices mauris, eu tincidunt nibh nibh eu massa. Aenean rhoncus quis nibh ac facilisis.</p>
-            <small>Fabricado en 2005</small>
-            </div>
-            <img src="/imágenes/batman/avion.jpg" alt="Avión de Batman"/>
-        </div>
-
-        <div class="item duo">
-            <div class="notitia">
-            <h2>Moto</h2>
-            <p>Nulla aliquip cupidatat voluptate veniam nostrud aliquip sit enim officia. Sit eu pariatur officia qui dolor adipisicing cupidatat. Sit consectetur et eu ut esse laboris nulla.</p>
-            <small>Fabricado en 2006</small>
-            </div>
-            <img src="/imágenes/batman/moto.jpg" alt="Moto de Batman"/>
-        </div>
-        
-        <div class="item tribus">
-            <div class="notitia">
-            <h2>Coche</h2>
-            <p>Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non</p>
-            <small>Fabricado en 2007</small>
-            </div>
-            <img src="/imágenes/batman/car.jpg" alt="Coche de Batman"/>
-        </div>
-        </div>
-
-        <div class="vehiculis-titulus">
-        <h2>Vehículos de Batman</h2>
-        </div>
-    </section>
-
-    <section id="videre" class="flex w-full justify-center min-h-[60vh] lg:min-h-[95vh] items-center bg-gray-900">
-        <CarrusImaginum
-        :photos="photos"
-        basePath="/imágenes/batman"
-        :autoplayDelay="1500"
-        />
-    </section>
+      <section id="videre" class="flex w-full justify-center min-h-[60vh] lg:min-h-[95vh] items-center bg-gray-900">
+          <CarrusImaginum
+          :photos="photos"
+          basePath="/imágenes/batman"
+          :autoplayDelay="1500"
+          />
+      </section>
 
 
-</div> 
+  </div> 
 </template>
 
 <style scoped>
@@ -171,44 +108,6 @@ onUnmounted(() => {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.icon-home{
-    color: slateblue;
-    width: 3rem;
-    height: 3rem;
-}
-
-.icon-home:hover {
-    color: white;
-    background-color:slateblue;
-}
-
-.toggle-menu {
-  position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 2;
-  background-color: white;
-}
-
-.extra-nav {
-  background-color: white;
-  opacity: 0.7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  position: fixed;
-  top: 0;
-  width: 11rem;
-  border-radius: 0 0 1rem 0;
-  z-index: 1;
-}
-
-@media (min-width: 640px){
-  .extra-nav {
-    width: 100%;
-    border-radius: 0;
-    opacity: 1;
-    left: 0;
-  }
-}
 
 .titulus-img {
   background-size: 100% 100%;
