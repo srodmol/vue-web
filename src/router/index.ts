@@ -3,6 +3,11 @@ import Domus from "../components/paginae/domus/domus.vue";
 import Batman from "../components/paginae/batman/Batman.vue";
 import Primus from "../components/paginae/simpsons/Primus.vue";
 import Responsum from "../components/paginae/responsum/Responsum.vue";
+import { CircleAlert, Layout } from "@lucide/vue";
+import Circa from "@/components/paginae/simpsons/Circa.vue";
+import Collection from "@/components/paginae/simpsons/Collection.vue";
+import Character from "@/components/paginae/simpsons/Character.vue";
+import Collection from "@/components/paginae/simpsons/Collection.vue";
 
 export const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -20,8 +25,40 @@ export const router = createRouter({
         },
         {
             path: '/simpsons',
-            name: 'simpsons',
-            component: Primus
+            children: [
+                {
+             path: '',   // /simpsons
+             name: 'simpsons',
+             component: Primus
+             },
+             {
+             path: 'about',   
+             component: Layout,
+             children: [
+            {
+             path: '',  // /simpsons/about    
+             name: 'simpsons-about',
+             component: Circa
+                     }
+                    ]
+                },
+            {
+             path: 'gallery',   
+             component: Layout,
+             children: [
+            {
+             path: '', // /simpsons/gallery   
+             name: 'simpsons-characters',
+             component: Collection
+                     },
+            {
+             path: ':id',   // /simpsons/gallery/  
+             name: 'simpsons-characters',
+             component: Character
+                     }
+                    ]
+                }
+            ]
         },
         {
             path: '/indecision',
