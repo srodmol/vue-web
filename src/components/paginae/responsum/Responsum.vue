@@ -47,5 +47,13 @@
         <div class="bg-teal-200 w-10 h-10"></div>
     </div>
         
+</div> 
+
+<div class="w-[800px] h-[800px] grid grid-cols-4 grid-rows-4 gap-4 m-4">
+    <div class="bg-sky-900 col-span-2 flex flex-wrap justify-center gap-4 p-4"> 
+        <div class="bg-sky-100  w-20 h-[20%]"></div>
+        <div class="bg-sky-100  w-20 h-[20%]"></div>
+        <div class="bg-sky-100  w-40 h-[20%]"></div>
+    </div>
 </div>
 </template>

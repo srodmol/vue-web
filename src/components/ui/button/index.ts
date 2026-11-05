@@ -20,6 +20,7 @@ export const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         domus: "bg-domus-cyan text-white hover:bg-domus-cyan/70 md: py-5 md:px-6 md:text-lg ",
+        tertiarius: "bg-white text-base border border-black hover:bg-simpsons-red focue:bg-simpson-red rounded-none"
       },
       size: {
         "default": "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -30,6 +31,7 @@ export const buttonVariants = cva(
         "icon-xs": "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
+        "elogantis": "h-7.5 py-0.5 px-5",
       },
     },
     defaultVariants: {
