@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 <template> 
     <div class="bg-simpsons-yellow min-h-screen text-center p-4 flex flex-col items-center justify-center">
-        <LogoSimpsons estilus="w-[24rem] sw:w-[35rem]"/>
+        <LogoSimpsons estilus="w-[8rem] sm:w-auto"/>
         <h1 class="text-xl my-1 font-medium">
             Discover some of the most amazing Quotes from The Simpsons
         </h1>
@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button'
                 <RouterLink to="/">Exit</RouterLink>
             </Button>
             <Button variant="tertiarius" size="elogantis">
-                <RouterLink to="/simpsons">Enter</RouterLink>
+                <RouterLink to="/simpsons/about">Enter</RouterLink>
             </Button>
         </div>
 
