@@ -1,31 +1,100 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { characters } from './data';
+import { characters, type Character } from './data';
+import { CheckIcon, ChevronsUpDownIcon } from '@lucide/vue'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 const route = useRoute()
 const router = useRouter()
 
-const character = computed(() =>
-    characters.find(char => char.id === Number(route.params.id))
-)
+const character = ref<Character | undefined>()
+const value = ref('')
+const open = ref(false)
+
+watch(() => route.params.id, (newId) => {
+    character.value = characters.find(char => char.id === Number(newId))
+    value.value = newId?.toString() || ''
+}, { immediate: true })
+
+const selectCharacter = (characterId: string) => {
+    value.value = characterId
+    open.value = false
+    router.push(`/simpsons/gallery/${ characterId }`)
+}
+
+const selectedLabel = computed(() => {
+    if (!value.value) return 'Selecciona un personaje...'
+    return characters.find(char => String(char.id) === value.value)?.nomen || 'Selecciona un personaje...'
+})
+
 </script>
 
 <template>
-  <div v-if="character">
-    <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-8">
+    <Popover v-model:open="open">
+        <PopoverTrigger as-child>
+            <Button
+                variant="outline"
+                role="combobox"
+                :aria-expanded="open"
+                class="w-[200px] justify-between mb-8"
+            >
+                {{ selectedLabel }}
+                <ChevronsUpDownIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+        </PopoverTrigger>
+        <PopoverContent class="w-[200px] p-0">
+            <Command>
+                <CommandInput placeholder="Buscar personaje..." />
+                <CommandList>
+                    <CommandEmpty>No se encontró ningún personaje.</CommandEmpty>
+                    <CommandGroup>
+                        <CommandItem
+                            v-for="char in characters"
+                            :key="char.id"
+                            :value="char.nomen"
+                            @select="selectCharacter(String(char.id))"
+                        >
+                            <CheckIcon
+                                :class="cn(
+                                    'mr-2 h-4 w-4',
+                                    value === String(char.id) ? 'opacity-100' : 'opacity-0',
+                                )"
+                            />
+                            {{ char.nomen }}
+                        </CommandItem>
+                    </CommandGroup>
+                </CommandList>
+            </Command>
+        </PopoverContent>
+    </Popover>
+
+  <div v-if="character" class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
+    <div class="info-quote">
         <h1 class="titulus-quote">
             {{ character.nomen }}
         </h1>
 
-        <div class="info-quote">
-            <p class="descriptione">
-                {{ character.descriptione }}
-            </p>
+        <p class="descriptione">
+            {{ character.descriptione }}
+        </p>
 
-            <div class="arca-quote" @click="router.push('/simpsons/gallery')">
-                <p class="quote">{{ character.quote }}</p>
-            </div>
+        <div class="arca-quote" @click="router.push('/simpsons/gallery')">
+            <p class="quote">« {{ character.quote }} »</p>
         </div>
     </div>
 
@@ -105,6 +174,7 @@ const character = computed(() =>
 
     .figure-quote {
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     min-width: min-content;
     }
