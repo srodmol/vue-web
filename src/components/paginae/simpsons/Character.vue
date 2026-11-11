@@ -45,33 +45,37 @@ const selectedLabel = computed(() => {
 </script>
 
 <template>
-    <Popover v-model:open="open">
+<div v-if="character" class="w-full max-w-page md:mx-auto my-8 px-5 md:px-20">
+  <div class="mb-8">
+        <label class="block text-lg font-medium font-semibold mb-2 text-gray-800">Buscar personaje:</label>
+        <Popover v-model:open="open">
         <PopoverTrigger as-child>
             <Button
                 variant="outline"
                 role="combobox"
                 :aria-expanded="open"
-                class="w-[200px] justify-between mb-8"
+                class="w-[200px] justify-between mb-8 bg-red-500 hover:bg-simpsons-yellow text-white border-2 border-black font-semibold shadow-md"
             >
                 {{ selectedLabel }}
                 <ChevronsUpDownIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
         </PopoverTrigger>
-        <PopoverContent class="w-[200px] p-0">
-            <Command>
-                <CommandInput placeholder="Buscar personaje..." />
+        <PopoverContent class="w-[200px] p-0 border-black bg-white">
+            <Command highlight-on-hover>
+                <CommandInput placeholder="Buscar..." class="border-2 border-gray-200"/>
                 <CommandList>
-                    <CommandEmpty>No se encontró ningún personaje.</CommandEmpty>
+                    <CommandEmpty>No se encontró</CommandEmpty>
                     <CommandGroup>
                         <CommandItem
                             v-for="char in characters"
                             :key="char.id"
                             :value="char.nomen"
                             @select="selectCharacter(String(char.id))"
+                            class="data-[highlighted]:bg-black data-[highlighted]:text-white"
                         >
                             <CheckIcon
                                 :class="cn(
-                                    'mr-2 h-4 w-4',
+                                    'mr-2 h-4 w-4 text-current',
                                     value === String(char.id) ? 'opacity-100' : 'opacity-0',
                                 )"
                             />
@@ -83,6 +87,8 @@ const selectedLabel = computed(() => {
         </PopoverContent>
     </Popover>
 
+    </div>
+    
   <div v-if="character" class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
     <div class="info-quote">
         <h1 class="titulus-quote">
@@ -102,6 +108,8 @@ const selectedLabel = computed(() => {
         <img :src="`/imágenes/simpsons/${ character.imago }`" :alt="character.nomen" />
     </figure>
   </div>
+</div>
+  
 
   <p v-else>Personaje no encontrado</p>
 </template>
